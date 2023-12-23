@@ -49,7 +49,7 @@ public static class App
     private static void HandleChainHashTable()
     {
         Console.WriteLine();
-        Console.WriteLine("Генерируем 10.000 пар...");
+        Console.WriteLine("Генерируем 100.000 пар...");
         var pairs = PairsGenerator.Generate(100_000);
         var keyValuePairs = pairs as KeyValuePair<int, string>[] ?? pairs.ToArray();
         
@@ -104,6 +104,54 @@ public static class App
 
     private static void HandleOpenAddrHashTable()
     {
+        Console.WriteLine();
+        Console.WriteLine("Генерируем 10.000 пар...");
+        var pairs = PairsGenerator.Generate(10_000);
+        var keyValuePairs = pairs as KeyValuePair<int, string>[] ?? pairs.ToArray();
         
+        var ht1 = new OpenAddressHashTable<string>(HashFunctions.BiHashFunctions.LinearProbing);
+        ht1.AddRange(keyValuePairs);
+        Console.WriteLine("Добавили все пары в таблицу с линейным пробированием");
+        
+        var ht2 = new OpenAddressHashTable<string>(HashFunctions.BiHashFunctions.QuadraticProbing);
+        ht2.AddRange(keyValuePairs);
+        Console.WriteLine("Добавили все пары в таблицу с квадратичным пробированием");
+
+        var ht3 = new OpenAddressHashTable<string>(HashFunctions.BiHashFunctions.DoubleHashing);
+        ht3.AddRange(keyValuePairs);
+        Console.WriteLine("Добавили все пары в таблицу с двойным хэшированием (функция из std + метод деления)");
+        
+        var ht4 = new OpenAddressHashTable<string>(HashFunctions.BiHashFunctions.XorMethod);ht4.AddRange(keyValuePairs);
+        Console.WriteLine("Добавили все пары в таблицу с XOR-пробированием");
+
+        var ht5 = new OpenAddressHashTable<string>(HashFunctions.BiHashFunctions.MidSquareMethod);
+        ht5.AddRange(keyValuePairs);
+        Console.WriteLine("Добавили все пары в таблицу с пробированием методом средних квадратов");
+
+        var ht = new List<OpenAddressHashTable<string>>
+        {
+            ht1,
+            ht2,
+            ht3,
+            ht4,
+            ht5
+        };
+        string[] names = 
+        {
+            "Линейное пробирование ", 
+            "Квадратичное пробирование", 
+            "Двойное хэширование", 
+            "XOR-пробирование", 
+            "Метод средних квадратов"
+        };
+        int i = 0;
+
+        foreach (var table in ht)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"{names[i]} (удалось вставить {table.Count} элементов)");
+            i++;
+            Console.WriteLine($"Длина самого большого кластера: {table.GetMaxClusterLength()}");
+        }
     }
 }

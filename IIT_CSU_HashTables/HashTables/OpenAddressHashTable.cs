@@ -19,6 +19,7 @@ public class OpenAddressHashTable<TValue>(BiHashFunction hashFunction, int capac
             if (_values[hashKey] is not null) continue;
             _values[hashKey] = new KeyValuePair<int, TValue>(key, value);
             Count++;
+            return;
         }
 
         throw new TableOverflowException();
@@ -74,8 +75,7 @@ public class OpenAddressHashTable<TValue>(BiHashFunction hashFunction, int capac
     {
         int maxCluster = 0;
         int currentCluster = 0;
-        int i = 0;
-        while (i < Capacity)
+        for (int i = 0; i < Capacity; i++)
         {
             if (_values[i] is not null)
             {
@@ -89,5 +89,20 @@ public class OpenAddressHashTable<TValue>(BiHashFunction hashFunction, int capac
         }
 
         return int.Max(maxCluster, currentCluster);
+    }
+    
+    public void AddRange(IEnumerable<KeyValuePair<int, TValue>> pairs)
+    {
+        foreach (var keyValuePair in pairs)
+        {
+            try
+            {
+                Add(keyValuePair.Key, keyValuePair.Value);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 }
