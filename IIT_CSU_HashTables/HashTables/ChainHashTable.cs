@@ -1,4 +1,6 @@
 ﻿using IIT_CSU_HashTables.Collections;
+using IIT_CSU_HashTables.Exceptions;
+using IIT_CSU_HashTables.HashFunctions;
 
 namespace IIT_CSU_HashTables.HashTables;
 
@@ -16,7 +18,7 @@ public class ChainHashTable<TValue>(HashFunction hashFunction, int capacity = 10
     /// <param name="value">Значение</param>
     /// <returns>true - если элемент удалось вставить.
     /// false - если не получилось вставить (пара с таким ключом уже есть в таблице)</returns>
-    public bool Add(int key, TValue value)
+    public void Add(int key, TValue value)
     {
         int hashKey = hashFunction(key);
         if (_values[hashKey] is null)
@@ -28,12 +30,19 @@ public class ChainHashTable<TValue>(HashFunction hashFunction, int capacity = 10
         {
             if (_values[hashKey]!.Contains(pair => Equals(pair.Key, key)))
             {
-                return false;
+                throw new KeyAlreadyExistsException();
             }
         }
         
         _values[hashKey]!.AppendFirst(new KeyValuePair<int, TValue>(key, value));
-        return true;
+    }
+    
+    public void AddRange(IEnumerable<KeyValuePair<int, TValue>> pairs)
+    {
+        foreach (var keyValuePair in pairs)
+        {
+            Add(keyValuePair.Key, keyValuePair.Value);
+        }
     }
 
     public void Remove(KeyValuePair<int, TValue> pair)

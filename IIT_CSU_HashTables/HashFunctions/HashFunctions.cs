@@ -1,4 +1,4 @@
-﻿namespace IIT_CSU_HashTables.HashTables;
+﻿namespace IIT_CSU_HashTables.HashFunctions;
 
 public static class HashFunctions
 {
@@ -21,18 +21,18 @@ public static class HashFunctions
     public static int ModMethod(int key)
         => key % 769;
 
-    public static int EMethod(int key)
+    public static int DigitsSum(int key)
     {
+        string strKey = key.ToString();
         int result = 0;
-        string str = key.ToString();
-        for (int i = 0; i < str.Length; i++)
+        for (int i = 0; i < strKey.Length - 1; i += 2)
         {
-            result += str[i];
+            result += int.Parse($"{strKey[i]}{strKey[i + 1]}");
         }
 
-        while (result >= 1000)
+        if (result >= 1000)
         {
-            result %= (int)Math.Pow(Math.E, result % 10);
+            result %= 1000;
         }
 
         return result;
