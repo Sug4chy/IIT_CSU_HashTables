@@ -4,7 +4,7 @@ public static class BiHashFunctions
 {
     public static int LinearProbing(int key, int i)
     {
-        var tempHashFunction = new HashFunction(HashFunctions.StdCombine);
+        var tempHashFunction = new HashFunction(HashFunctions.ModMethod);
         return tempHashFunction(key) + 1033 * i;
     }
 
@@ -12,13 +12,13 @@ public static class BiHashFunctions
     {
         const int c1 = 269;
         const int c2 = 311;
-        var tempHashFunction = new HashFunction(HashFunctions.StdCombine);
+        var tempHashFunction = new HashFunction(HashFunctions.ModMethod);
         return tempHashFunction(key) + c1 * i + c2 * i * i;
     }
 
     public static int DoubleHashing(int key, int i)
     {
-        var tempHashFunction1 = new HashFunction(HashFunctions.StdCombine);
+        var tempHashFunction1 = new HashFunction(HashFunctions.MultiplyMethod);
         var tempHashFunction2 = new HashFunction(HashFunctions.ModMethod);
         return tempHashFunction1(key) + i * tempHashFunction2(key);
     }
