@@ -5,7 +5,7 @@ namespace IIT_CSU_HashTables.HashTables;
 
 public class OpenAddressHashTable<TValue>(BiHashFunction hashFunction, int capacity = 10_000)
 {
-    private const int MaxProbes = 7;
+    private const int MaxProbes = 191;
     private readonly KeyValuePair<int, TValue>?[] _values = new KeyValuePair<int, TValue>?[capacity];
 
     public int Capacity { get; private set; } = capacity;

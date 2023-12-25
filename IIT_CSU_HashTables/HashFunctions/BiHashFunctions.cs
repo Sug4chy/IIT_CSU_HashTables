@@ -5,13 +5,13 @@ public static class BiHashFunctions
     public static int LinearProbing(int key, int i)
     {
         var tempHashFunction = new HashFunction(HashFunctions.StdCombine);
-        return tempHashFunction(key) + 3 * i;
+        return tempHashFunction(key) + 1033 * i;
     }
 
     public static int QuadraticProbing(int key, int i)
     {
-        const int c1 = 7;
-        const int c2 = 4;
+        const int c1 = 269;
+        const int c2 = 311;
         var tempHashFunction = new HashFunction(HashFunctions.StdCombine);
         return tempHashFunction(key) + c1 * i + c2 * i * i;
     }
