@@ -10,14 +10,11 @@ public static class HashFunctions
     
     public static int MultiplyMethod(int key)
     {
-        // m должно быть в формате m = 2^p, где p - натуральное число. Взяли максимальное,
-        // при котором таблица не ломается
         const int m = 1000;
         double a = (Math.Sqrt(5) - 1) / 2;
         return (int)Math.Floor(m * (key * a % 1));
     }
 
-    //769 - простое число, находится ровно между 2^9 и 2^10
     public static int ModMethod(int key)
         => key % 1000;
 
